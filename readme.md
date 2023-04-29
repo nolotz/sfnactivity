@@ -55,7 +55,7 @@ When you call the `Stop` method, the activity worker will stop polling for new t
 For more detailed usage, please refer to the example tests.
 
 ## License
-This library is distributed under the MIT License. See LICENSE for more information.
+This library is distributed under the Apache License 2.0. See LICENSE for more information.
 
 ## Contributing
 Contributions are welcome! Please feel free to open an issue or submit a pull request with your changes.
