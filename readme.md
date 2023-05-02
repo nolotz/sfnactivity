@@ -21,23 +21,25 @@ go get github.com/nolotz/sfnactivity
 
 ### Create an activity worker instance
 
-To create an instance, you need to use the `sfnactivity.New` function, providing an AWS Step Functions client (`sfnactivity.SFNClient`) and a configuration object (`sfnactivity.Config`). The configuration object must include the WorkerName and the ActivityArn (Amazon Resource Name) of your activity.
+To create an instance, you need to use the `sfnactivity.New` function, providing an AWS Step Functions client (`sfnactivity.SFNClient`) and a configuration object (`sfnactivity.Config`). 
+The configuration object must contain the WorkerName and the ActivityArn (Amazon Resource Name) of your activity, as well as a handler function.
 
 ```go
 activity := sfnactivity.New(sfnClient, sfnactivity.Config{
 	WorkerName:   "test",
 	ActivityArn:  "arn:aws:states:us-east-1:00000000000:activity:my-activity",
+	Handler: func(ctx context.Context, t *sfnactivity.Task) (string, error) {
+            return `{"works": true}`, nil
+        },
 })
 ```
 
 ### Start the activity worker
 
-To start the activity worker, call the `Start` method on the `activity` instance created in the previous step. The `Start` method accepts a `sfnactivity.TaskFunc` function as an argument, which will be executed whenever a task is received from AWS Step Functions.
+To start the activity worker, invoke the `Start` method on the activity instance created in the previous step. If the start process fails, it will return an error.
 
 ```go
-err := activity.Start(func(ctx context.Context, t *sfnactivity.Task) (string, error) {
-    return `{"works": true}`, nil
-})
+err := activity.Start()
 if err != nil {
     panic(err)
 }
